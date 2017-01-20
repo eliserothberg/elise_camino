@@ -1,0 +1,27 @@
+{% extends 'base.html' %} 
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="jumbotron">
+      {% if all_students %}
+      <h3>These are your classes:</h3>
+      <ul>
+        {% for student in student.classes_set.all %}
+        <li>{{ student.classes }}</li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <h3>You are not registered for any classes.</h3> 
+      {% endif %}
+      <p class="bs-component">If you would like to register for a class, please enter the name below:</p>
+      <form action="{% url 'classes' %}" method="POST">
+        {% csrf_token %}
+        <input type="text" name="textfield">
+        <button class="btn btn-success btn-sm" type="submit">Submit</button>
+      </form>
+      <a href="/logout">Logout</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

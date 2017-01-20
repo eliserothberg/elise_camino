@@ -1,0 +1,40 @@
+{% load staticfiles %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="description" content="Camino Financial">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Class Registration</title>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js">
+  </script>
+</head>
+
+<body>
+  <div id="content">
+    <div id="flash" style="display:none;">
+      <p><span id="flash-message"></span> <a href="#">Close</a></p>
+    </div>
+    <br/>
+    <form>
+      <p>Enter your mobile phone number:</p>
+      <input id="to" type="text" placeholder="ex: +3105551212" />
+      <button>Get your PIN</button>
+    </form>
+  </div>
+  <script src="/static/js/ui.js"></script>
+  <script src="/static/js/form.js"></script>
+</body>
+
+</html>
+{% block content %}
+<h3>Register</h3>
+<form action="/accounts/register/" method="post">{% csrf_token %}
+  <input type="text" id="mobile_number" name="mobile_number" placeholder="Enter PIN" required>
+  <br/> {{form.as_p}}
+  <br/>
+  <input type="submit" value="Register" />
+</form>
+{% endblock %}
