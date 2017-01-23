@@ -19,8 +19,8 @@ class SMSVerification(models.Model):
     phone = PhoneNumberField(null=False, blank=False)
 
 class Student(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=200)
+    user = models.ForeignKey(User, related_name='%(class)s_the_user')
+    username = models.ForeignKey(User, related_name='%(class)s_the_username')
     classes = models.CharField(max_length=200)
     def __str__(self):
         return self.name

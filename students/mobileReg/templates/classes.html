@@ -17,9 +17,14 @@
       <p class="bs-component">If you would like to register for a class, please enter the name below:</p>
       <form action="{% url 'classes' %}" method="POST">
         {% csrf_token %}
-        <input type="text" name="textfield">
-        <button class="btn btn-success btn-sm" type="submit">Submit</button>
-      </form>
+         {% for field in form %}
+        <div class="fieldWrapper">
+            {{ field.errors }}
+            Class: {{ field }}
+        </div>
+    {% endfor %}
+    <p><input type="submit" value="Register" /></p>
+</form>
       <a href="/logout">Logout</a>
     </div>
   </div>

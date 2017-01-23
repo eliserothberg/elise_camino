@@ -7,17 +7,46 @@ from django_twilio.decorators import twilio_view
 from twilio.twiml import Response
 from django.template.loader import get_template
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from twilio.rest import TwilioRestClient
 from django.conf import settings
 from twilio import twiml
-from django.http import HttpResponse
 from models import SMSVerification, Student
 from students.forms import addClassForm
 from django.forms import ModelForm
 from django.conf.urls.static import static
+from django_twilio.client import twilio_client
+from django.conf.urls.static import static
+import random
+from students.settings import TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_NUMBER
+client = TwilioRestClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+rand = random.randint(111111,999999)
 
 def index(request):
     return render(request, 'index.html')
+
+# def SMSVerification(request):
+#     form = PostForm(request.POST)
+#     if form.is_valid():
+#         form = form_class(data=request.POST)
+#         phone = form.cleaned_data['sendTo']
+    
+#     return render(request, 'index.html', {
+#         'form': form,
+#     })
+
+def message(request):
+    phone = request.POST.get('phone', "")
+    if not phone:
+        return HttpResponse("No mobile number", status=403)
+
+    randPIN = "%04d" % rand
+    mess = client.messages.create(
+                        body="Your number is %s" % randPIN,
+                        to=phone,
+                        from_=+12138143752,
+                    )
+    return HttpResponse("Message %s sent" % mess.sid, status=200)
 
 def classes(request):
   if request.method == 'POST':
@@ -25,8 +54,11 @@ def classes(request):
     form = addClassForm(request.POST)
     if form.is_valid():
       classes = request.POST.get('classes', '')
-      classes_obj = addClassForm(classes = classes)
+      #__init__() got an unexpected keyword argument 'classes'
+      classes_obj = addClassForm(classes = classes, user_id = user)
       classes_obj.save()
+      if form.is_valid():
+          form.save()
       
       return HttpResponseRedirect(reverse('classes'))
   else:
@@ -43,7 +75,6 @@ def register(request):
         if form.is_valid():
           form.save()
           return HttpResponseRedirect('/accounts/register/complete')
-
     else:
         form = UserCreationForm()
     token = {}

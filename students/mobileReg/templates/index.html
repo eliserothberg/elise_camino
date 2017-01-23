@@ -1,3 +1,36 @@
-Hello!
-    <p>Please <a href="/login/">LOG IN</a></p>
-    <p>or </p><a href="/accounts/register">CLICK HERE TO REGISTER</a>
+<!-- <p>Hello!</p>
+<p>Please <a href="/login/">LOG IN</a></p>
+<p>or get a PIN to register here:
+ -->
+{% load staticfiles %}
+{% load static %}
+
+  <meta name="description" content="Camino Financial">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Class Registration</title>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js">
+  </script>
+
+  <p>Hello!</p>
+  <p>Please <a href="/login/">LOG IN</a></p>
+
+  <div id="content">
+    <div id="flash" style="display:none;">
+      <p><span id="flash-message"></span> <a href="#">Close</a></p>
+    </div>
+    <br/>
+    <!-- <form>
+      <p>Or enter your mobile number and get a PIN to register:</p>
+      <input id="sendTo" type="text" placeholder="ex: 3105551212" />
+      <button type="submit">Get your PIN</button>
+    </form> -->
+    <form>
+    <input type="text" id="phone" name="phone" placeholder="ex: 310-555-1212" required>
+<button class="btn" type="button" onClick="send_pin()"><i class="icon-share"></i> Get PIN</button>
+</form>
+
+  </div>
+ <script src="/static/js/form.js"></script>
+
+
+</p>Then<a href="/accounts/register"> CLICK HERE TO REGISTER</a>

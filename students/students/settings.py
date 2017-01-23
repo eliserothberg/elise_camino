@@ -54,6 +54,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+DJANGO_TWILIO_FORGERY_PROTECTION = False
 LOGIN_REDIRECT_URL = '/classes'
 APPEND_SLASH = True
 SITE_ID=1
