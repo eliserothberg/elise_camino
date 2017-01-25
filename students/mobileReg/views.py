@@ -1,39 +1,30 @@
 from django.shortcuts import render
-from django.views.decorators import csrf
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_protect
-from django_twilio.decorators import twilio_view
-from twilio.twiml import Response
-from django.template.loader import get_template
-from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from django.contrib import auth
+from students.forms import CustomUserCreationForm
 from twilio.rest import TwilioRestClient
-from django.conf import settings
 from twilio import twiml
-from models import SMSVerification, Student
-from students.forms import addClassForm
-from django.forms import ModelForm
-from django.conf.urls.static import static
 from django_twilio.client import twilio_client
+from django.http import HttpResponse, HttpResponseRedirect
 from django.conf.urls.static import static
 import random
 from students.settings import TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_NUMBER
 client = TwilioRestClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 rand = random.randint(111111,999999)
 
-def index(request):
-    return render(request, 'index.html')
 
-# def SMSVerification(request):
-#     form = PostForm(request.POST)
-#     if form.is_valid():
-#         form = form_class(data=request.POST)
-#         phone = form.cleaned_data['sendTo']
+def index(request):
+    phone_number = request.POST.get('phone_number', '')
+    name = request.POST.get('name', '')
+    pin = request.POST.get('pin', '')
+    class_name = request.POST.get('class_name', '')
+    user = auth.authenticate(phone_number=phone_number, pin=pin)
     
-#     return render(request, 'index.html', {
-#         'form': form,
-#     })
+    if user is not None:
+        auth.login(request, user)
+        return HttpResponseRedirect('/loggedin')
+    else:
+        return HttpResponseRedirect('/invalid_login/')
 
 def message(request):
     phone = request.POST.get('phone', "")
@@ -46,42 +37,56 @@ def message(request):
                         to=phone,
                         from_=+12138143752,
                     )
+    
     return HttpResponse("Message %s sent" % mess.sid, status=200)
 
+def loggedin(request):
+    return render(request, 'loggedin.html', 
+                  {'user': request.user })
+
+
+def invalid_login(request):
+    return render(request, 'invalid_login.html')
+
 def classes(request):
-  if request.method == 'POST':
-  
-    form = addClassForm(request.POST)
-    if form.is_valid():
-      classes = request.POST.get('classes', '')
-      #__init__() got an unexpected keyword argument 'classes'
-      classes_obj = addClassForm(classes = classes, user_id = user)
-      classes_obj.save()
-      if form.is_valid():
-          form.save()
-      
-      return HttpResponseRedirect(reverse('classes'))
-  else:
-    form = addClassForm()
+    return render(request, 'classes.html')
 
+def your_class(request):
+    return render(request, 'your_class.html')
 
-  return render(request, 'classes.html', {
-    'form': form,
-    })
- 
-def register(request):
+def logout(request):
+    auth.logout(request)
+    return render(request, 'logout.html')
+
+def login(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-          form.save()
-          return HttpResponseRedirect('/accounts/register/complete')
-    else:
-        form = UserCreationForm()
-    token = {}
-    token.update()
-    token['form'] = form
-    return render(request, 'accounts/register.html', token)
+            form.save()
+            return HttpResponseRedirect('/classes')
+        else:
+          form = CustomUserCreationForm()
+        args = {}
+        args.update(csrf(request))
+    
+    args['form'] = form
+    
+    return render(request, 'index.html')
+
+# def login(request):
+#     if request.method == 'POST':
+#         form = CustomUserCreationForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponseRedirect('/classes')
+#     else:
+#         form = CustomUserCreationForm()
+#     args = {}
+#     args.update(csrf(request))
+    
+#     args['form'] = form
+    
+#     return render(request, 'index.html', args)
 
 def registration_complete(request):
     return render(request, 'accounts/registration_complete.html')
- 

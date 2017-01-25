@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_twilio',
@@ -53,6 +54,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+AUTH_USER_MODEL = 'mobileReg.CustomUser'
+AUTHENTICATION_BACKENDS = ['mobileReg.backends.CustomUserAuth',]
 
 DJANGO_TWILIO_FORGERY_PROTECTION = False
 LOGIN_REDIRECT_URL = '/classes'
@@ -78,6 +82,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'students.wsgi.application'
 
+PROJECT_FOLDER = os.getcwd()
+
+# ADMINS = [
+    
+# ]
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases

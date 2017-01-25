@@ -1,4 +1,174 @@
-{% extends 'base.html' %} 
+
+{% load staticfiles %}
+{% load static %}
+
+  <meta name="description" content="Camino Financial">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Class Registration</title>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js">
+  </script>
+<!-- 
+  <p>Hello!</p>
+  <a href="/login/">LOG IN</a>to see your class
+  <p>Or get a pin and register:</p>
+ -->
+  <div id="content">
+    <div id="flash" style="display:none;">
+      <p><span id="flash-message"></span> <a href="#">Close</a></p>
+    </div>
+    <br/>
+    <!-- <form>
+      <p>Or enter your mobile number and get a PIN to register:</p>
+      <input id="sendTo" type="text" placeholder="ex: 3105551212" />
+      <button type="submit">Get your PIN</button>
+    </form> -->
+    <form>
+    <input type="text" id="phone" name="phone" placeholder="ex: 310-555-1212" required>
+<button class="btn" type="button" onClick="send_pin()"><i class="icon-share"></i> Get PIN</button>
+
+
+</form>
+
+{% block content %}
+
+<!-- <form action="/classes/" method="post">{% csrf_token %}
+  <label for="name">PIN: </label>
+  <input type="text" name="pin" value="" id="pin">
+  <br/>
+   
+    <p><input type="submit" value="Log In" /></p>
+</form> -->
+{% endblock %}
+
+
+ <script src="/static/js/form.js"></script>
+<!-- 
+
+</p>Then<a href="/accounts/register"> CLICK HERE TO REGISTER</a>
+
+
+<! <p>Hello!</p>
+<p>Please <a href="/login/">LOG IN</a></p>
+<p>or get a PIN to register here:
+
+{% load staticfiles %}
+{% load static %}
+
+  <meta name="description" content="Camino Financial">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Class Registration</title>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js">
+  </script>
+
+  <p>Hello!</p>
+  <a href="/login/">LOG IN</a>
+  <p>Or get a pin and register:</p>
+
+  <div id="content">
+    <div id="flash" style="display:none;">
+      <p><span id="flash-message"></span> <a href="#">Close</a></p>
+    </div>
+    <br/> -->
+    <!-- <form>
+      <p>Or enter your mobile number and get a PIN to register:</p>
+      <input id="sendTo" type="text" placeholder="ex: 3105551212" />
+      <button type="submit">Get your PIN</button>
+    </form> -->
+ <!--    <form>
+    <input type="text" id="phone" name="phone" placeholder="ex: 310-555-1212" required>
+<button class="btn" type="button" onClick="send_pin()"><i class="icon-share"></i> Get PIN</button>
+
+
+</form>
+
+{% block content %}
+
+<form action="" method="post">{% csrf_token %}
+  <label for="pin">PIN: </label>
+  <label for="name">Name: </label>
+  <label for="phone_number">Mobile #: </label>
+  <label for="class_name">Class Name: </label>
+ 
+  <br/>  -->
+    <!-- {% for field in form %}
+        <div class="fieldWrapper">
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }}
+        </div>
+    {% endfor %} -->
+    <!--  <label for="pin">Enter PIN:</label>
+  <input type="text" id="pin" name="pin" value="{{ pin.id }}" required> -->
+  <!--   <p><input type="submit" value="Register" /></p>
+</form>
+{% endblock %} -->
+
+
+
+<!-- <div class="container-fluid">
+
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3>Log In</h3>
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+                    <form class="form-horizontal" role="form" action="/classes/" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="id_name">
+                                Name:
+                            </label>
+                            <div class="col-sm-10">
+                                <input id="id_name" maxlength="30" name="name" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="id_phone number">
+                                Mobile Number:
+                            </label>
+                            <div class="col-sm-10">
+                                <input id="id_phone number" maxlength="30" name="phone number" type="phone number">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                         <label class="control-label col-sm-2" for="pin">
+                                PIN:
+                            </label>
+                            <div class="col-sm-10">
+                                <input id="pin" maxlength="30" name="pin" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                         <label class="control-label col-sm-2" for="class_name">
+                                Class Name:
+                            </label>
+                            <div class="col-sm-10">
+                                <input id="class-name" maxlength="30" name="class_name" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+  </div> -->
+<!--  <script src="/static/js/form.js"></script>
+ --><!-- 
+
+</p>Then<a href="/accounts/register"> CLICK HERE TO REGISTER</a>
+
+
+<!{% extends 'base.html' %} 
 {% block content %} 
 
 {% if form.errors %}
@@ -41,7 +211,7 @@
   </div>
 </div>
 {% endblock %} 
-{% block javascript %}
+<!{% block javascript %}
 <script>
 { %
   if not user.is_authenticated %
@@ -50,3 +220,4 @@ $("ul.nav.navbar-nav.navbar-right").css("display", "none"); { % endif %
 }
 </script>
 {% endblock %}
+ --> 

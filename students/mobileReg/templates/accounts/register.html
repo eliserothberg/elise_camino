@@ -1,7 +1,35 @@
-{% block content %}
-<h3>Register</h3>
+{% exends base.html %}
 
-<form action="/accounts/register/" method="post">{% csrf_token %}
+{% block content %}
+
+<h2>Register</h2>
+
+{% for field in form %}
+  {{field.error}}
+
+{{% endfor %}}
+
+<form action=/accounts/register/ method="post"/>
+  
+</form>
+
+{{% endblock %}}
+<!-- {% block content %}
+<h3>Register</h3>
+<div id="content">
+    <div id="flash" style="display:none;">
+      <p><span id="flash-message"></span> <a href="#">Close</a></p>
+    </div>
+    <br/>
+   
+    <form>
+    <input type="text" id="phone" name="phone" placeholder="ex: 310-555-1212" required>
+<button class="btn" type="button" onClick="send_pin()"><i class="icon-share"></i> Get PIN</button>
+
+
+</form>
+
+<form action="/accounts/register/" method="post" name="plusSMS">{% csrf_token %}
  
   <br/> 
     {% for field in form %}
@@ -10,8 +38,7 @@
             {{ field.label_tag }} {{ field }}
         </div>
     {% endfor %}
-     <label for="pin">Enter PIN:</label>
-  <input type="text" id="pin" name="pin" value="{{ pin.id }}" required>
-    <p><input type="submit" value="Register" /></p>
+   <p><input type="submit" value="Register" /></p>
 </form>
 {% endblock %}
+ -->

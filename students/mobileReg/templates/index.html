@@ -1,7 +1,27 @@
-<!-- <p>Hello!</p>
-<p>Please <a href="/login/">LOG IN</a></p>
-<p>or get a PIN to register here:
- -->
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <style type="text/css">
+      body { padding-top: 60px; }
+    </style>   
+
+    <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand">Class Registration</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+          </ul>
+        </div><!-- /.nav-collapse -->
+      </div><!-- /.container -->
+    </div><!-- /.navbar -->
+  
 {% load staticfiles %}
 {% load static %}
 
@@ -12,7 +32,8 @@
   </script>
 
   <p>Hello!</p>
-  <p>Please <a href="/login/">LOG IN</a></p>
+  <a href="/classes/">Log In</a>
+  <p>Or get a pin to register for a class:</p>
 
   <div id="content">
     <div id="flash" style="display:none;">
@@ -27,10 +48,99 @@
     <form>
     <input type="text" id="phone" name="phone" placeholder="ex: 310-555-1212" required>
 <button class="btn" type="button" onClick="send_pin()"><i class="icon-share"></i> Get PIN</button>
+
+
 </form>
 
-  </div>
- <script src="/static/js/form.js"></script>
+{% block content %}
 
+<form action="/accounts/registration_complete/" method="post">{% csrf_token %}
+  <label for="name">PIN: </label>
+  <input type="text" name="pin" value="" id="pin">
+  <br/>
+  <label for="name">Name: </label>
+  <input type="text" name="name" value="" id="name">
+  <br/>
+  <label for="phone_number">Mobile #: </label>
+  <input type="text" name="phone_number" value="" id="phone_number">
+  <br/>
+  <label for="class_name">Class Name: </label>
+  <input type="text" name="class_name" value="" id="class_name">
+ 
+  <br/> 
+    <!-- {% for field in form %}
+        <div class="fieldWrapper">
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }}
+        </div>
+    {% endfor %} -->
+    <!--  <label for="pin">Enter PIN:</label>
+  <input type="text" id="pin" name="pin" value="{{ pin.id }}" required> -->
+    <p><input type="submit" value="Register" /></p>
+</form>
+{% endblock %}
+
+
+
+<!-- <div class="container-fluid">
+
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3>Log In</h3>
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+                    <form class="form-horizontal" role="form" action="/classes/" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="id_name">
+                                Name:
+                            </label>
+                            <div class="col-sm-10">
+                                <input id="id_name" maxlength="30" name="name" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="id_phone number">
+                                Mobile Number:
+                            </label>
+                            <div class="col-sm-10">
+                                <input id="id_phone number" maxlength="30" name="phone number" type="phone number">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                         <label class="control-label col-sm-2" for="pin">
+                                PIN:
+                            </label>
+                            <div class="col-sm-10">
+                                <input id="pin" maxlength="30" name="pin" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                         <label class="control-label col-sm-2" for="class_name">
+                                Class Name:
+                            </label>
+                            <div class="col-sm-10">
+                                <input id="class-name" maxlength="30" name="class_name" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+  </div> -->
+ <script src="/static/js/form.js"></script>
+<!-- 
 
 </p>Then<a href="/accounts/register"> CLICK HERE TO REGISTER</a>

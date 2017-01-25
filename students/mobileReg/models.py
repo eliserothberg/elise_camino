@@ -1,27 +1,61 @@
-from __future__ import unicode_literals
-
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.base_user import BaseUserManager
+from django.utils.translation import ugettext_lazy as _
 
-from django.conf import settings
+class CustomUserManager(BaseUserManager):
+    def _create_user(self, phone_number, name, class_name, 
+                    pin, 
+                    is_anonymous, is_active, 
+                    **extra_fields):
+        
+        if not phone_number:
+            raise ValueError('The given phone_number must be set')
+        phone_number = self.normalize_name(phone_number)
+        user = self.model(phone_number=phone_number, 
+                        name=name, 
+                        class_name=class_name,
+                        pin=pin,
+                        is_anonymous=False,
+                        is_active=True,
+                        last_login=now,
+                        **extra_fields)
+        user.save(using=self._db)
+        return user
 
-from phonenumber_field.modelfields import PhoneNumberField
-from django.utils.crypto import get_random_string
-from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+    def create_user(self, phone_number=None, **extra_fields):
+        extra_fields.setdefault('is_superuser', False)
+        return self._create_user(phone_number, **extra_fields)
 
-# Create your models here.
+    def create_superuser(self, phone_number,  **extra_fields):
+        extra_fields.setdefault('is_superuser', True)
 
-class SMSVerification(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    verified = models.BooleanField(default=False)
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+
+        return self._create_user(phone_number, **extra_fields)
+
+class CustomUser(AbstractBaseUser):
+#     """
+#     Custom user class.
+#     """
+    phone_number = models.IntegerField(db_index=True, unique=True,)
+    name = models.CharField(max_length=50, blank=True)
     pin = models.IntegerField()
-    sent = models.BooleanField(default=False)
-    phone = PhoneNumberField(null=False, blank=False)
+    class_name = models.CharField(max_length=250, blank=True)
+     
+    USERNAME_FIELD = 'phone_number'
+    REQUIRED_FIELDS = ['name', 'pin', 'class_name']
 
-class Student(models.Model):
-    user = models.ForeignKey(User, related_name='%(class)s_the_user')
-    username = models.ForeignKey(User, related_name='%(class)s_the_username')
-    classes = models.CharField(max_length=200)
-    def __str__(self):
-        return self.name
-        return self.classes
+    objects = CustomUserManager()
+
+    class Meta:
+        verbose_name = _('user')
+        verbose_name_plural = _('users')
+
+    def get_absolute_url(self):
+            return "/users/%s/" % urlquote(self.phone_number)
+
+    def phone_number_user(self, message, TWILIO_NUMBER=None):
+            
+        send_phone_number(message, TWILIO_NUMBER, [self.phone_number])

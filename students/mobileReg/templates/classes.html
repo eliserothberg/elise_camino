@@ -1,32 +1,34 @@
-{% extends 'base.html' %} 
-{% block content %}
+{% load staticfiles %}
+{% load static %}
 
-<div class="container">
-  <div class="row">
-    <div class="jumbotron">
-      {% if all_students %}
-      <h3>These are your classes:</h3>
-      <ul>
-        {% for student in student.classes_set.all %}
-        <li>{{ student.classes }}</li>
-        {% endfor %}
-      </ul>
-      {% else %}
-      <h3>You are not registered for any classes.</h3> 
-      {% endif %}
-      <p class="bs-component">If you would like to register for a class, please enter the name below:</p>
-      <form action="{% url 'classes' %}" method="POST">
-        {% csrf_token %}
-         {% for field in form %}
-        <div class="fieldWrapper">
-            {{ field.errors }}
-            Class: {{ field }}
-        </div>
-    {% endfor %}
-    <p><input type="submit" value="Register" /></p>
-</form>
-      <a href="/logout">Logout</a>
+  <meta name="description" content="Camino Financial">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Class Registration</title>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js">
+  </script>
+  <div id="content">
+    <div id="flash" style="display:none;">
+      <p><span id="flash-message"></span> <a href="#">Close</a></p>
     </div>
-  </div>
-</div>
+    <br/>
+    <p>Enter your mobile number for a pin:</p>
+
+    <form>
+    <input type="text" id="phone" name="phone" placeholder="ex: 310-555-1212" required>
+<button class="btn" type="button" onClick="send_pin()"><i class="icon-share"></i> Get PIN</button>
+</form>
+
+ <script src="/static/js/form.js"></script>
+
+ {% block content %}
+
+<form action="/yourClass/" method="post">{% csrf_token %}
+  <label for="name">Enter PIN: </label>
+  <input type="text" name="pin" value="" id="pin">
+  <br/>
+  <label for="phone_number">Enter Mobile #: </label>
+  <input type="text" name="phone_number" value="" id="phone_number">
+  <br/> 
+  <p><input type="submit" value="See Your Class" /></p>
+</form>
 {% endblock %}
