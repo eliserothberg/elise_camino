@@ -6,29 +6,33 @@
   <title>Class Registration</title>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js">
   </script>
-  <div id="content">
-    <div id="flash" style="display:none;">
-      <p><span id="flash-message"></span> <a href="#">Close</a></p>
-    </div>
-    <br/>
-    <p>Enter your mobile number for a pin:</p>
-
-    <form>
-    <input type="text" id="phone" name="phone" placeholder="ex: 310-555-1212" required>
-<button class="btn" type="button" onClick="send_pin()"><i class="icon-share"></i> Get PIN</button>
-</form>
+      <link rel="stylesheet" type="text/css" href="../../static/students/style.css">
 
  <script src="/static/js/form.js"></script>
 
  {% block content %}
-
-<form action="/yourClass/" method="post">{% csrf_token %}
-  <label for="name">Enter PIN: </label>
+<br>
+<form action="/your_class/" method="post">{% csrf_token %}
+  <label for="pin">Enter PIN: </label>
   <input type="text" name="pin" value="" id="pin">
   <br/>
-  <label for="phone_number">Enter Mobile #: </label>
-  <input type="text" name="phone_number" value="" id="phone_number">
+  <label for="phone">Enter Mobile #: </label>
+  <input type="text" name="phone" value="" id="phone">
   <br/> 
-  <p><input type="submit" value="See Your Class" /></p>
+  <p><input type="submit" value="See Your Class(es)" /></p>
 </form>
-{% endblock %}
+
+<div class="container">
+  <div class="row">
+    <div class="jumbotron">
+      {% if all_students %}
+      <h3>These are your classes:</h3>
+      <ul>
+        {% for student in student.classes_set.all %}
+        <li>{{ student.classes }}</li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <h3>You are not registered for any classes.</h3> 
+      {% endif %}
+  {% endblock %}

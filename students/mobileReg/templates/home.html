@@ -1,5 +1,4 @@
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Latest compiled and minified CSS -->
+
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <style type="text/css">
       body { padding-top: 60px; }
@@ -26,37 +25,48 @@
 {% load static %}
 
   <meta name="description" content="Camino Financial">
-      <link rel="stylesheet" type="text/css" href="../../static/students/style.css">
-
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Class Registration</title>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js">
   </script>
+    <link rel="stylesheet" type="text/css" href="../../static/students/style.css">
 
 
   <p>Hello!</p>
-  <a href="/login/">Log In</a>
-  <p>Or sign up for a class:</p>
+  <a href="/classes/">Log In</a>
+  <p>Or get a pin to register for a class:</p>
+
+  <div id="content">
+    <div id="flash" style="display:none;">
+      <p><span id="flash-message"></span> <a href="#">Close</a></p>
+    </div>
+    <br/>
+    <form>
+    <input type="text" id="phone" name="phone" placeholder="ex: 310-555-1212" required>
+<input type="submit" value="Get PIN" onClick="send_pin()"><i class="icon-share"></i>
+
+
+</form>
 
 {% block content %}
 
-<form action="/classes/" method="post">{% csrf_token %}
+<form action="/accounts/registration_complete/" method="post">{% csrf_token %}
+  <label for="name">PIN: </label>
+  <input type="text" name="pin" value="" id="pin">
+  <br/>
   <label for="name">Name: </label>
   <input type="text" name="name" value="" id="name">
   <br/>
   <label for="phone">Mobile #: </label>
-  <input type="text" id="phone" name="phone" placeholder="ex: 310-555-1212" required>
+  <input type="text" name="phone" value="" id="phone">
   <br/>
   <label for="class_name">Class Name: </label>
   <input type="text" name="class_name" value="" id="class_name">
  
-    <br/>
-    
-<button class="btn" onClick="send_pin()" type="submit"><i class="icon-share"></i>Click to get registration PIN</button>
-
-</div> -->
+  <br/>  
+  <p><input type="submit" value="Register" /></p>
 </form>
 {% endblock %}
 
  <script src="/static/js/form.js"></script>
-
+ --> --> -->

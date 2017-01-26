@@ -5,7 +5,11 @@ body {
 li a {
     color: green;
 }
+h3,
 h4,
 h5 {
   padding-left: 5%;
+}
+form {
+  margin-left: 5%;
 }
